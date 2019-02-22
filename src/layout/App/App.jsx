@@ -1,13 +1,13 @@
 // @flow
 
 import React from 'react';
-import './App.css';
+import TabsDemo from '@/components/TabsDemo';
 
 const App = () => {
   return (
-    <div>
-      <h1>My React App!</h1>
-    </div>
+    <>
+      <TabsDemo />
+    </>
   );
 };
 
