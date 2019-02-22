@@ -12,11 +12,26 @@
     "setupFilesAfterEnv": [
       "jest-enzyme"
     ],
-    "testEnvironment": "enzyme"
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "testEnvironment": "enzyme",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "resolver": "jest-webpack-resolver"
+  },
+  "jestWebpackResolver": {
+    "silent": true,
+    "webpackConfig": "webpack.config.js"
   },
   "babel": {
-    "presets": ["@babel/preset-env", "@babel/preset-react"],
-    "plugins": ["babel-plugin-transform-class-properties"]
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "babel-plugin-transform-class-properties"
+    ]
   },
   "importSort": {
     ".js, .jsx": {
@@ -64,7 +79,14 @@
       "import",
       "prettier",
       "react"
-    ]
+    ],
+    "settings": {
+      "import/resolver": {
+        "webpack": {
+          "config": "webpack.config.js"
+        }
+      }
+    }
   },
   "author": "Denis Ezhkov",
   "license": "ISC",
@@ -81,6 +103,7 @@
     "css-loader": "^2.1.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "^5.14.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -90,11 +113,13 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
     "flow-bin": "^0.93.0",
+    "flow-typed": "^2.5.1",
     "html-webpack-plugin": "^3.2.0",
     "import-sort-style-react2": "^0.3.5",
     "jest": "^24.1.0",
     "jest-environment-enzyme": "^7.0.1",
     "jest-enzyme": "^7.0.1",
+    "jest-webpack-resolver": "^0.3.0",
     "react-test-renderer": "^16.8.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.5",
@@ -103,7 +128,9 @@
   },
   "dependencies": {
     "prettier": "^1.16.4",
+    "ramda": "^0.26.1",
     "react": "^16.8.2",
-    "react-dom": "^16.8.2"
+    "react-dom": "^16.8.2",
+    "react-tabs": "^3.0.0"
   }
 }
