@@ -11,13 +11,13 @@ describe('DemoTabs', () => {
 
   it('check changing tabs', () => {
     const wrapper = mount(<App />);
-    const tabTitles = wrapper.find('[data-test="tab"]').hostNodes();
+    const tabTitles = wrapper.find('li[data-test="tab"]');
 
-    const tabContentsBeforeChanges = wrapper.find('[data-test="tab-content"]').hostNodes();
+    const tabContentsBeforeChanges = wrapper.find('div[data-test="tab-content"]');
     expect(tabContentsBeforeChanges.at(0).children()).toExist();
 
     tabTitles.at(1).simulate('click');
-    const tabContentsAfterChanges = wrapper.find('[data-test="tab-content"]').hostNodes();
+    const tabContentsAfterChanges = wrapper.find('div[data-test="tab-content"]');
 
     expect(tabContentsAfterChanges.at(0).children()).not.toExist();
     expect(tabContentsAfterChanges.at(1).children()).toExist();
@@ -25,21 +25,20 @@ describe('DemoTabs', () => {
 
   it('addTabs', () => {
     const wrapper = mount(<App />);
-    const tabAddButton = wrapper.find('[data-test="tab-add"]').hostNodes();
-    const tabContentLenghtBeforeChanges = wrapper.find('[data-test="tab-content"]').hostNodes().length;
+    const tabAddButton = wrapper.find('[data-test="tab-add"]');
+
     tabAddButton.simulate('click');
 
-    const tabContentAfterChanges = wrapper.find('[data-test="tab-content"]').hostNodes();
-    expect(tabContentAfterChanges).toHaveLength(tabContentLenghtBeforeChanges + 1);
+    const tabAfterChanges = wrapper.find('li[data-test="tab"]');
+    expect(tabAfterChanges.at(2)).toContainMatchingElement('[aria-selected="true"]');
   });
 
   it('removeTabs', () => {
     const wrapper = mount(<App />);
-    const tabAddButton = wrapper.find('[data-test="tab-remove"]').hostNodes();
-    const tabContentLenghtBeforeChanges = wrapper.find('[data-test="tab-content"]').hostNodes().length;
-    tabAddButton.at(0).simulate('click');
+    const tabRemoveButtons = wrapper.find('[data-test="tab-remove"]');
 
-    const tabContentAfterChanges = wrapper.find('[data-test="tab-content"]').hostNodes();
-    expect(tabContentAfterChanges).toHaveLength(tabContentLenghtBeforeChanges - 1);
+    tabRemoveButtons.last().simulate('click');
+
+    expect(wrapper).toContainMatchingElements(1, 'li[data-test="tab"]');
   });
 });
