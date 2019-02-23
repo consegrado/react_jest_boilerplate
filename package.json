@@ -12,7 +12,9 @@
     "setupFilesAfterEnv": [
       "jest-enzyme"
     ],
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "testEnvironment": "enzyme",
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
@@ -127,6 +129,8 @@
     "webpack-dev-server": "^3.2.0"
   },
   "dependencies": {
+    "debug": "^4.1.1",
+    "nanoid": "^2.0.1",
     "prettier": "^1.16.4",
     "ramda": "^0.26.1",
     "react": "^16.8.2",

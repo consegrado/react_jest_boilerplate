@@ -1,32 +1,51 @@
 // @flow
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import debug from 'debug';
+import nanoid from 'nanoid';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 const TabsDemo = () => {
-  return (
-    <Tabs>
-      <TabList>
-        <Tab>
-          <span data-test-name="tab">Title 1</span>
-        </Tab>
-        <Tab>
-          <span data-test-name="tab">Title 2</span>
-        </Tab>
-      </TabList>
+  const [state, setState] = useState([nanoid(), nanoid()]);
+  const logger = debug('DemoTabs');
+  const removeTab = useCallback(tabId => e => {
+    e.preventDefault();
+    logger(`remove tab ${tabId}`, state);
+    setState(item => item.filter(tab => tab !== tabId));
+  });
 
-      <TabPanel>
-        <div data-test-name="tab-content">
-          <h2>Any content 1</h2>
-        </div>
-      </TabPanel>
-      <TabPanel>
-        <div data-test-name="tab-content">
-          <h2>Any content 2</h2>
-        </div>
-      </TabPanel>
-    </Tabs>
+  const addNewTab = useCallback(() => {
+    const newId = nanoid();
+    logger(`add tab ${newId}`, state);
+    setState(item => [...item, nanoid()]);
+  });
+
+  return (
+    <div data-test="demo-tabs">
+      <Tabs>
+        <TabList>
+          {state.map((tab, i) => (
+            <Tab key={tab}>
+              <span data-test="tab">Title {i}</span>
+              <button data-test="tab-remove" type="button" onClick={removeTab(tab)}>
+                remove
+              </button>
+            </Tab>
+          ))}
+          <button type="button" data-test="tab-add" onClick={addNewTab}>
+            add
+          </button>
+        </TabList>
+        {state.map((tab, i) => (
+          <TabPanel key={tab} data-test="tab-content">
+            <div>
+              <h2>Any content {i}</h2>
+            </div>
+          </TabPanel>
+        ))}
+      </Tabs>
+    </div>
   );
 };
 
