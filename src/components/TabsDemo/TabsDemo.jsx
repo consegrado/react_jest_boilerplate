@@ -1,48 +1,55 @@
 // @flow
 
-import React, { useState, useCallback } from 'react';
-import debug from 'debug';
-import nanoid from 'nanoid';
+import React, { useState, useCallback, useMemo, useContext } from 'react';
+import { isNil } from 'ramda';
+import ServiceContext from '@/context/ServiceContext';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import CreateTab from '@/components/CreateTab';
+import RssTab from '@/components/RssTab';
+import useTabs from '@/hooks/useTabs.hook';
 import 'react-tabs/style/react-tabs.css';
 
 const TabsDemo = () => {
-  const [state, setState] = useState([nanoid(3), nanoid(3)]);
-  const [activeTab, setActiveTab] = useState(0);
-  const logger = debug('DemoTabs');
-  const removeTab = useCallback(tabId => e => {
-    e.preventDefault();
-    logger(`remove tab ${tabId}`, state);
-    setState(item => item.filter(tab => tab !== tabId));
+  const { storage } = useContext(ServiceContext);
+  const { state, removeTab, addNewTab } = useTabs(storage);
+
+  const initialActiveTab = useMemo(() => {
+    return (!isNil(storage) && Number(storage.get('demoTabIndex'))) || 0;
   });
 
-  const addNewTab = useCallback(() => {
-    const newId = nanoid(3);
-    logger(`add tab ${newId}`, state);
-    setState(item => [...item, newId]);
-    setActiveTab(state.length);
+  const [activeTab, setActiveTab] = useState(initialActiveTab);
+  const changeTab = useCallback(indexTab => {
+    setActiveTab(indexTab);
+    if (!isNil(storage)) {
+      storage.set('demoTabIndex', indexTab);
+    }
   });
 
   return (
     <div data-test="demo-tabs">
-      <Tabs selectedIndex={activeTab} onSelect={(i) => setActiveTab(i)}>
+      <CreateTab addNewTab={addNewTab} />
+      <Tabs selectedIndex={activeTab} onSelect={i => changeTab(i)}>
         <TabList>
           {state.map(tab => (
-            <Tab key={tab} data-test="tab">
-              <span>Title {tab}</span>
-              <button data-test="tab-remove" type="button" onClick={removeTab(tab)}>
+            <Tab key={tab.id} data-test="tab">
+              <span>Title {tab.name}</span>
+              <button data-test="tab-remove" type="button" onClick={removeTab(tab.id)}>
                 remove
               </button>
             </Tab>
           ))}
-          <button type="button" data-test="tab-add" onClick={addNewTab}>
-            add
-          </button>
         </TabList>
         {state.map(tab => (
-          <TabPanel key={tab} data-test="tab-content">
+          <TabPanel key={tab.id} data-test="tab-content">
             <div>
-              <h2>Any content {tab}</h2>
+              <h2>
+                {tab.type === 'default' && (
+                  <div>
+                    Any content {tab.type} {tab.id}
+                  </div>
+                )}
+                {tab.type === 'rss' && <RssTab url={tab.url} />}
+              </h2>
             </div>
           </TabPanel>
         ))}

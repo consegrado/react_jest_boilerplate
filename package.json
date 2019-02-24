@@ -4,7 +4,7 @@
   "description": "React + Webpack + Jest",
   "main": "index.js",
   "scripts": {
-    "test": "DEBUG=* jest",
+    "test": "DEBUG=myapp jest",
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "npm test && webpack --mode production"
   },
@@ -28,8 +28,19 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react"
+      [
+        "@babel/preset-env",
+        {
+          "exclude": [
+            "transform-regenerator"
+          ],
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/preset-react",
+      "@babel/preset-flow"
     ],
     "plugins": [
       "babel-plugin-transform-class-properties"
@@ -95,6 +106,7 @@
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@babel/preset-env": "^7.3.1",
+    "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
@@ -129,11 +141,13 @@
     "webpack-dev-server": "^3.2.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "debug": "^4.1.1",
+    "js-cookie": "^2.2.0",
     "nanoid": "^2.0.1",
     "prettier": "^1.16.4",
     "ramda": "^0.26.1",
-    "react": "^16.8.2",
+    "react": "^16.8.3",
     "react-dom": "^16.8.2",
     "react-tabs": "^3.0.0"
   }
