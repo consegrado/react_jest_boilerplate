@@ -20,9 +20,7 @@ const TabsDemo = () => {
   const [activeTab, setActiveTab] = useState(initialActiveTab);
   const changeTab = useCallback(indexTab => {
     setActiveTab(indexTab);
-    if (!isNil(storage)) {
-      storage.set('demoTabIndex', indexTab);
-    }
+    storage.set('demoTabIndex', indexTab);
   });
 
   return (
@@ -32,7 +30,7 @@ const TabsDemo = () => {
         <TabList>
           {state.map(tab => (
             <Tab key={tab.id} data-test="tab">
-              <span>Title {tab.name}</span>
+              <span>{tab.name}</span>
               <button data-test="tab-remove" type="button" onClick={removeTab(tab.id)}>
                 remove
               </button>

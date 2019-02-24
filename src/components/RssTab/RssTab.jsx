@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useEffect, useState, useContext, useCallback } from 'react';
+import { isNil } from 'ramda';
 import ServiceContext from '@/context/ServiceContext';
 
 type PropsType = {
@@ -11,7 +12,8 @@ const RssTab = ({ url }: PropsType) => {
   const [rss, setUrl] = useState(null);
 
   const getRss = useCallback(async url => {
-    setUrl(await api.getRss(url));
+    const data = await api.getRss(url);
+    setUrl(data);
   });
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const RssTab = ({ url }: PropsType) => {
   return (
     <div>
       <h1>{url}</h1>
-      {rss}
+      {!isNil(rss) && <div data-test="rss-content">{rss}</div>}
     </div>
   );
 };

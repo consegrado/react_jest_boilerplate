@@ -8,11 +8,11 @@ const CreateTab = ({ addNewTab }) => {
     <div>
       <div>
         name
-        <input type="text" defaultValue={name} onChange={e => setName(e.target.value)} />
+        <input type="text" data-test="tab-add-name" value={name} onChange={e => setName(e.target.value)} />
       </div>
       <div>
         url
-        <input type="text" defaultValue={url} onChange={e => setUrl(e.target.value)} />
+        <input type="text" data-test="tab-add-url" value={url} onChange={e => setUrl(e.target.value)} />
       </div>
 
       <button type="button" data-test="tab-add" onClick={() => addNewTab(url ? 'rss' : 'default', name, url)}>

@@ -143,8 +143,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "debug": "^4.1.1",
+    "delay": "^4.1.0",
     "js-cookie": "^2.2.0",
     "nanoid": "^2.0.1",
+    "nock": "^10.0.6",
     "prettier": "^1.16.4",
     "ramda": "^0.26.1",
     "react": "^16.8.3",

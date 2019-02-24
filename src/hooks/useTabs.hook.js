@@ -7,7 +7,7 @@ import logger from '@/lib/logger';
 const useTabs = storage => {
   const intialState = useMemo(() => {
     return (
-      (!isNil(storage) && storage.get('demoTabState') && JSON.parse(storage.get('demoTabState'))) || [
+      (storage.get('demoTabState') && JSON.parse(storage.get('demoTabState'))) || [
         {
           id: nanoid(3),
           name: 'Test 1',
@@ -28,9 +28,7 @@ const useTabs = storage => {
     logger(`remove tab ${tabId}`, state);
     setState(item => {
       const newState = item.filter(tab => tab.id !== tabId);
-      if (storage) {
-        storage.set('demoTabState', newState);
-      }
+      storage.set('demoTabState', newState);
       return newState;
     });
   });
